@@ -5,14 +5,17 @@ requirejs.config({
     // to the game script folder.
     baseUrl: 'scripts/lib',
     paths: {
-        game: '../game'
+        game: '../game',
+        easeljs: 'http://code.createjs.com/easeljs-0.7.0.min',
+        soundjs: 'http://code.createjs.com/soundjs-0.5.0.min'
     },
 
     // Shims for dependencies that don't support Require.js
     shim: {
-        'kinetic': {
-            exports: 'Kinetic'
-        }
+        'kinetic': { exports: 'Kinetic' },
+        'easeljs': { exports: 'createjs' },
+        'soundjs': { exports: 'createjs.SoundJS' },
+        'phaser': { exports: 'Phaser' }
     }
 });
 
