@@ -87,11 +87,11 @@ var weaponDefinitions =
                     { name: "sword_blade",
                       isBlade: true,
                       density: 30,
-                      bounce: 0.3 },
+                      bounce: 0.1 },
                     { name: "sword_hilt",
                       isBlade: false,
                       density: 5,
-                      bounce: 0.6 }
+                      bounce: 0.4 }
                 ],
               mass: 35.0,
               inertia: 50.0 } 
@@ -587,7 +587,7 @@ function killSprite(sprite)
     // TODO: Add sound
     sprite.isDead = true;
     game.add.tween(sprite)
-        .to({alpha: 0, angle: -15 }, 150, Phaser.Easing.Linear.None)
+        .to({alpha: 0, angle: -15 }, 75, Phaser.Easing.Linear.None)
         .onCompleteCallback(function() { removeSprite(sprite); })
         .start();
 
