@@ -145,8 +145,8 @@ function initializeGame()
     // Base game definition
     game = 
         new Phaser.Game(
-            screenWidth, screenHeight, Phaser.AUTO, '', 
-            //screenWidth, screenHeight, Phaser.CANVAS, '', 
+            screenWidth, screenHeight, Phaser.AUTO, 'gameContainer', 
+            //screenWidth, screenHeight, Phaser.CANVAS, 'gameContainer', 
             { preload: preload, create: create, update: update, render: render });
 }
 

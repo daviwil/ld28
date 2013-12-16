@@ -6,8 +6,51 @@
 	    <script type="text/javascript" src="scripts/lib/Box2dWeb.js"></script>
 	    <script type="text/javascript" src="scripts/lib/lscache.js"></script>
         <script type="text/javascript" src="scripts/game.js"></script>
+        <style type="text/css">
+            canvas {
+               display : block;
+                margin : auto;
+            }
+            p { 
+                font-family: 'New Rocker'; 
+                font-size: 18px;
+                color: white;
+            }
+            a:link {
+                color: #f6ed59;
+            }
+            a:hover {
+                color: #f6ed59;
+            }
+            a:visited {
+                color: #f47a4f;
+            }
+        </style>
     </head>
     <body bgcolor="#182f3f">
+<div id="fb-root"></div>
+        <!-- Facebook Like script -->
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=110896155605648";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+        <!-- Google Analytics -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-46479193-1', 'daviwil.github.io');
+          ga('send', 'pageview');
+
+        </script>
+
+        <!-- Font loading -->
         <script type="text/javascript">
 
             // Load up the web font but wait until it's loaded before initializing the game
@@ -26,5 +69,19 @@
             })();
 
         </script>
+
+        <!-- Credits and Like button -->
+        <div id="credits" align="center">
+            <p>Art by <a href="http://spriteart.com">Steve Seator</a>, code and music by <a href="http://daviwil.com">David Wilson</a><br />
+                Developed with <a href="http://phaser.io">Phaser</a> and <a href="https://code.google.com/p/box2dweb/">Box2DWeb</a> -- Source code on <a href="http://github.com/daviwil/ld28">GitHub</a><br />
+                Written in a weekend for the Ludum Dare 28 Jam<br />
+
+                <div class="fb-like" data-href="http://daviwil.github.io/ld28" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+            </p>
+        </div>
+
+        <!-- Game canvas -->
+        <div id="gameContainer" align="center">
+        </div>
     </body>
 </html>
