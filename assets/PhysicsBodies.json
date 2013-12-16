@@ -1,0 +1,47 @@
+	{ 
+		
+		"sword_blade": [
+			
+				{
+					"density": 2, "friction": 0, "bounce": 0, 
+					"filter": { "categoryBits": 1, "maskBits": 65535 },
+					"shape": [   26, 202  ,  21, 195  ,  21, 54  ,  39, 54  ,  39, 195  ,  34, 202  ]
+				}  
+		]
+		
+		, 
+		"sword_hilt": [
+			
+				{
+					"density": 2, "friction": 0, "bounce": 0, 
+					"filter": { "categoryBits": 1, "maskBits": 65535 },
+					"shape": [   62, 46  ,  62, 54  ,  0, 54  ,  0, 46  ]
+				}   ,
+				{
+					"density": 2, "friction": 0, "bounce": 0, 
+					"filter": { "categoryBits": 1, "maskBits": 65535 },
+					"shape": [   37, 0  ,  37, 46  ,  23, 46  ,  23, 0  ]
+				}  
+		]
+		
+		, 
+		"dragon_head": [
+			
+				{
+					"density": 2, "friction": 0, "bounce": 0, 
+					"filter": { "categoryBits": 1, "maskBits": 65535 },
+					"shape": [   676, 284  ,  707, 400  ,  565, 468  ,  507, 317  ]
+				}  
+		]
+		
+		, 
+		"dragon_hand": [
+			
+				{
+					"density": 2, "friction": 0, "bounce": 0, 
+					"filter": { "categoryBits": 1, "maskBits": 65535 },
+					"shape": [   512, 426  ,  380, 495  ,  316, 337  ,  460, 275  ]
+				}  
+		]
+		
+	}
