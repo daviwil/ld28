@@ -37,9 +37,8 @@ var dragon;
 var world;
 var worldScale = 30.0;
 var worldWidth = screenWidth;
-var worldHeight = 30000;         // Test height
-//var worldHeight = 5000;         // Test height
-var enemyGenerationMultiplier = 3;
+var worldHeight = 30000;
+var enemyGenerationMultiplier = 5;
 var groundOffset = 0;
 
 // Background variables
@@ -197,7 +196,7 @@ function preload() {
     game.load.image('wyvern_piece2', 'assets/enemy3_piece2.png');
 
     // Music
-    game.load.audio('theme', ['assets/theme_loop.mp3']);
+    game.load.audio('theme', ['assets/theme_loop.mp3', 'assets/theme_loop.ogg']);
 
     // Data files
     game.load.text('physicsBodies', 'assets/PhysicsBodies.json');
@@ -339,7 +338,8 @@ function create()
     }
     
     // Start the game music
-    //music.play('', 0, 0.65, true);
+    var music = game.add.audio("theme");
+    music.play('', 0, 0.65, true);
 
 	//game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN ]);
     cursorKeys = game.input.keyboard.createCursorKeys();
