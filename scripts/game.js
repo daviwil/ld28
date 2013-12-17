@@ -4,7 +4,7 @@ var game;
 
 // Screen resolution variables
 var screenWidth = 1024;
-var screenHeight = 768;
+var screenHeight = 720;
 
 // Game state variables
 var STATE_NONE = 0, 
@@ -37,11 +37,10 @@ var dragon;
 var world;
 var worldScale = 30.0;
 var worldWidth = screenWidth;
-//var worldHeight = 200000;     // Real height
-var worldHeight = 20000;         // Test height
+var worldHeight = 30000;         // Test height
 //var worldHeight = 5000;         // Test height
 var enemyGenerationMultiplier = 3;
-var groundOffset = 0;   // TODO: Increase when ground graphics available
+var groundOffset = 0;
 
 // Background variables
 var bgSprite;
@@ -124,6 +123,7 @@ var enemyDefinitions =
           giblets: ["wyvern_piece1", "wyvern_piece2"] }
     ];
 
+var GameStates
 
 // Type definition helpers
 var b2Vec2 = Box2D.Common.Math.b2Vec2,  
@@ -145,9 +145,13 @@ function initializeGame()
     // Base game definition
     game = 
         new Phaser.Game(
-            screenWidth, screenHeight, Phaser.AUTO, 'gameContainer', 
+            screenWidth, screenHeight, Phaser.AUTO, 'gameContainer');
             //screenWidth, screenHeight, Phaser.CANVAS, 'gameContainer', 
-            { preload: preload, create: create, update: update, render: render });
+            //{ preload: preload, create: create, update: update, render: render });
+
+    game.state.add("Preload", { preload: preload, create: preload_create, update: preload_update });
+    game.state.add("Game", { preload: preload, create: create, update: update, render: render });
+    game.state.start("Preload");
 }
 
 function preload() {
@@ -158,6 +162,9 @@ function preload() {
 
     // Player
     game.load.image('knight', 'assets/knight_drop1.png');
+
+    // Maiden
+    game.load.image('maiden', 'assets/maiden.png');
 
     // Weapons
     game.load.image('sword', 'assets/sword_test.png');
@@ -179,8 +186,44 @@ function preload() {
     game.load.image('wyvern_piece1', 'assets/enemy3_piece1.png');
     game.load.image('wyvern_piece2', 'assets/enemy3_piece2.png');
 
+    // Music
+    game.load.audio('theme', ['assets/theme_loop.mp3']);
+
     // Data files
     game.load.text('physicsBodies', 'assets/PhysicsBodies.json');
+}
+
+var loadingText, loadingGraphics, progressWidth = 500;
+
+function preload_create()
+{
+    game.stage.backgroundColor = '#182f3f';
+    loadingText =
+        game.add.text(
+            screenWidth / 2, screenHeight / 2, 
+            "Loading, please wait...", 
+            { font: "45px " + fontName, fill: "#ffffff", align: "center" });
+    
+    loadingText.anchor.setTo(0.5, 0.5);
+    loadingGraphics = game.add.graphics(0, 0);
+
+    // Preload the music so that it's decoded by the time the game starts
+    //var music = game.add.audio('theme');
+}
+
+function preload_update() 
+{
+    loadingGraphics.lineStyle(0, 0xFFFFFF);
+    loadingGraphics.beginFill(0xFFFFFF);
+    loadingGraphics.drawRect((screenWidth / 2) - 300, (screenHeight / 2) + 50, (game.load.progress / 100) * 600, 25);
+    loadingGraphics.endFill();
+    loadingGraphics.lineStyle(2, 0xFFFFFF);
+    loadingGraphics.drawRect((screenWidth / 2) - 305, (screenHeight / 2) + 45, 610, 35);
+
+    if (game.load.progress === 100 && game.cache.isSoundDecoded('theme'))
+    {
+        game.state.start("Game");
+    }
 }
 
 function create() 
@@ -189,7 +232,7 @@ function create()
     physicsBodies = JSON.parse(contents);
 
     // Set up background elements
-    game.stage.backgroundColor = '#94dcfe';
+    game.stage.backgroundColor = '#182f3f';
     game.world.setBounds(0, 0, worldWidth, worldHeight);
     bgSprite = game.add.sprite(0, 0, 'bg');
     bgSprite.body = null;
@@ -206,9 +249,15 @@ function create()
     dragon = game.add.sprite(0, 0, 'dragon');
     dragon.body = null;
     //dragon.scale.x = game.rnd.pick([1, -1]);
-    dragon.x = dragon.scale.x === -1 ? Math.abs(dragon.width): 0;
+    //dragon.x = dragon.scale.x === -1 ? Math.abs(dragon.width): 0;
+    dragon.x = game.rnd.frac() * (screenWidth - dragon.width);
     dragon.y = worldHeight - dragon.height;
     createDragonBody(dragon);
+
+    // Load the maiden
+    var maiden = game.add.sprite(0, 0, 'maiden');
+    maiden.x = dragon.x + 345; //screenWidth / 3;
+    maiden.y = (worldHeight - dragon.height) + 265;
 
     // Load the knight
     knight = game.add.sprite(screenWidth / 2, weaponDropStartY, 'knight');
@@ -295,6 +344,9 @@ function create()
         }
     }
     
+    // Start the game music
+    //music.play('', 0, 0.65, true);
+
 	//game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN ]);
     cursorKeys = game.input.keyboard.createCursorKeys();
 }
@@ -339,7 +391,6 @@ function initializePhysics()
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
     // Configure debug drawing
-    // TODO: Don't do this for release!
     //var debugDraw = new b2DebugDraw();
     //debugDraw.SetSprite(game.canvas.getContext("2d"));
     //debugDraw.SetDrawScale(worldScale);
@@ -422,7 +473,7 @@ function createEnemy(enemyDefinition)
         y = 
             (game.rnd.realInRange( 
                 enemyDefinition.worldRange[0],
-                enemyDefinition.worldRange[1]) * (worldHeight - 1600)) + 500;
+                enemyDefinition.worldRange[1]) * (worldHeight - 1600)) + 400;
 
     var enemy = enemyGroup.create(x, y, spriteName);
     enemy.definition = enemyDefinition;
@@ -853,14 +904,6 @@ function completeGame(gameResult)
 
     // Game is done now
     currentState = STATE_DONE;
-
-    // Make sure the weapon is all the way in the ground
-    if (weapon.bounds.bottom < worldHeight - groundOffset)
-    {
-        // TODO: Fix this?
-        //var deltaY = (worldHeight - groundOffset) - weapon.bounds.bottom; 
-        //weapon.y += deltaY; 
-    }
 
     // TODO: Result music?
     if (gameResult === RESULT_MISSED)
