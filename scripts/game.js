@@ -123,8 +123,6 @@ var enemyDefinitions =
           giblets: ["wyvern_piece1", "wyvern_piece2"] }
     ];
 
-var GameStates
-
 // Type definition helpers
 var b2Vec2 = Box2D.Common.Math.b2Vec2,  
     b2AABB = Box2D.Collision.b2AABB,
@@ -206,13 +204,6 @@ function preload() {
 }
 
 var loadingText, loadingGraphics, progressWidth = 500;
-
-function preload_create()
-{
-
-    // Preload the music so that it's decoded by the time the game starts
-    //var music = game.add.audio('theme');
-}
 
 function preload_update() 
 {
