@@ -149,12 +149,24 @@ function initializeGame()
             //screenWidth, screenHeight, Phaser.CANVAS, 'gameContainer', 
             //{ preload: preload, create: create, update: update, render: render });
 
-    game.state.add("Preload", { preload: preload, create: preload_create, update: preload_update });
+    game.state.add("Preload", { preload: preload, loadUpdate: preload_update });
     game.state.add("Game", { preload: preload, create: create, update: update, render: render });
     game.state.start("Preload");
 }
 
 function preload() {
+
+    // Set up preloader rendering stuff
+    game.stage.backgroundColor = '#182f3f';
+    loadingText =
+        game.add.text(
+            screenWidth / 2, screenHeight / 2, 
+            "Loading, please wait...", 
+            { font: "45px " + fontName, fill: "#ffffff", align: "center" });
+    
+    loadingText.anchor.setTo(0.5, 0.5);
+    loadingGraphics = game.add.graphics(0, 0);
+
     // Backgrounds
     game.load.image('bg', 'assets/sky_scribbleB.jpg');
     game.load.image('tower_base', 'assets/tower_base_bg.png');
@@ -197,15 +209,6 @@ var loadingText, loadingGraphics, progressWidth = 500;
 
 function preload_create()
 {
-    game.stage.backgroundColor = '#182f3f';
-    loadingText =
-        game.add.text(
-            screenWidth / 2, screenHeight / 2, 
-            "Loading, please wait...", 
-            { font: "45px " + fontName, fill: "#ffffff", align: "center" });
-    
-    loadingText.anchor.setTo(0.5, 0.5);
-    loadingGraphics = game.add.graphics(0, 0);
 
     // Preload the music so that it's decoded by the time the game starts
     //var music = game.add.audio('theme');
